@@ -36,6 +36,7 @@ func TestNormalizeOperation(t *testing.T) {
 			WithRemoveFragmentDefinitions(),
 			WithRemoveUnusedVariables(),
 			WithNormalizeDefinition(),
+			WithInputCoercionForList(),
 		)
 		normalizer.NormalizeOperation(&operationDocument, &definitionDocument, &report)
 
