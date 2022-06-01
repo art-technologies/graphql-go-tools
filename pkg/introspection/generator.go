@@ -3,10 +3,10 @@ package introspection
 import (
 	"strings"
 
-	"github.com/jensneuse/graphql-go-tools/internal/pkg/unsafebytes"
-	"github.com/jensneuse/graphql-go-tools/pkg/ast"
-	"github.com/jensneuse/graphql-go-tools/pkg/astvisitor"
-	"github.com/jensneuse/graphql-go-tools/pkg/operationreport"
+	"github.com/wundergraph/graphql-go-tools/internal/pkg/unsafebytes"
+	"github.com/wundergraph/graphql-go-tools/pkg/ast"
+	"github.com/wundergraph/graphql-go-tools/pkg/astvisitor"
+	"github.com/wundergraph/graphql-go-tools/pkg/operationreport"
 )
 
 const (
@@ -263,6 +263,7 @@ func (i *introspectionVisitor) EnterDirectiveDefinition(ref int) {
 	i.currentDirective = NewDirective()
 	i.currentDirective.Name = i.definition.DirectiveDefinitionNameString(ref)
 	i.currentDirective.Description = i.definition.DirectiveDefinitionDescriptionString(ref)
+	i.currentDirective.IsRepeatable = i.definition.DirectiveDefinitions[ref].Repeatable.IsRepeatable
 }
 
 func (i *introspectionVisitor) LeaveDirectiveDefinition(ref int) {

@@ -3,8 +3,8 @@ package ast
 import (
 	"bytes"
 
-	"github.com/jensneuse/graphql-go-tools/internal/pkg/unsafebytes"
-	"github.com/jensneuse/graphql-go-tools/pkg/lexer/position"
+	"github.com/wundergraph/graphql-go-tools/internal/pkg/unsafebytes"
+	"github.com/wundergraph/graphql-go-tools/pkg/lexer/position"
 )
 
 // DirectiveDefinition
@@ -19,6 +19,12 @@ type DirectiveDefinition struct {
 	ArgumentsDefinition     InputValueDefinitionList // optional, e.g. (if: Boolean)
 	On                      position.Position        // on
 	DirectiveLocations      DirectiveLocations       // e.g. FIELD
+	Repeatable              Repeatable
+}
+
+type Repeatable struct {
+	IsRepeatable bool
+	Position     position.Position
 }
 
 func (d *Document) DirectiveDefinitionNameBytes(ref int) ByteSlice {

@@ -3,10 +3,10 @@ package introspection_datasource
 import (
 	"testing"
 
-	"github.com/jensneuse/graphql-go-tools/pkg/engine/datasourcetesting"
-	"github.com/jensneuse/graphql-go-tools/pkg/engine/plan"
-	"github.com/jensneuse/graphql-go-tools/pkg/engine/resolve"
-	"github.com/jensneuse/graphql-go-tools/pkg/introspection"
+	"github.com/wundergraph/graphql-go-tools/pkg/engine/datasourcetesting"
+	"github.com/wundergraph/graphql-go-tools/pkg/engine/plan"
+	"github.com/wundergraph/graphql-go-tools/pkg/engine/resolve"
+	"github.com/wundergraph/graphql-go-tools/pkg/introspection"
 )
 
 const (
@@ -208,7 +208,7 @@ func TestIntrospectionDataSourcePlanning(t *testing.T) {
 									Fetches: []resolve.Fetch{
 										&resolve.SingleFetch{
 											BufferId:   1,
-											Input:      `{"request_type":3,"on_type_name":$$0$$,"include_deprecated":$$1$$}`,
+											Input:      `{"request_type":3,"on_type_name":"$$0$$","include_deprecated":$$1$$}`,
 											DataSource: &Source{},
 											Variables: resolve.NewVariables(
 												&resolve.ObjectVariable{
@@ -224,7 +224,7 @@ func TestIntrospectionDataSourcePlanning(t *testing.T) {
 										},
 										&resolve.SingleFetch{
 											BufferId:   2,
-											Input:      `{"request_type":4,"on_type_name":$$0$$,"include_deprecated":$$1$$}`,
+											Input:      `{"request_type":4,"on_type_name":"$$0$$","include_deprecated":$$1$$}`,
 											DataSource: &Source{},
 											Variables: resolve.NewVariables(
 												&resolve.ObjectVariable{
