@@ -129,6 +129,7 @@ type options struct {
 	extractVariables          bool
 	removeUnusedVariables     bool
 	normalizeDefinition       bool
+	inputCoercionForList      bool
 }
 
 type Option func(options *options)
@@ -157,6 +158,12 @@ func WithNormalizeDefinition() Option {
 	}
 }
 
+func WithInputCoercionForList() Option {
+	return func(options *options) {
+		options.inputCoercionForList = true
+	}
+}
+
 func (o *OperationNormalizer) setupOperationWalkers() {
 	fragmentInline := astvisitor.NewWalker(48)
 	fragmentSpreadInline(&fragmentInline)
@@ -168,7 +175,9 @@ func (o *OperationNormalizer) setupOperationWalkers() {
 	}
 
 	other := astvisitor.NewWalker(48)
-	inputCoercionForList(&other)
+	if o.options.inputCoercionForList {
+		inputCoercionForList(&other)
+	}
 	removeSelfAliasing(&other)
 	mergeInlineFragments(&other)
 	mergeFieldSelections(&other)

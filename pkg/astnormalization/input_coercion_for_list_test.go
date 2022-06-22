@@ -503,4 +503,40 @@ query Foo($a: InputWithList) {
   }
 }`, `{}`, `{"a":{"list":[{"foo":"bar","input":{"foo":"bar2","input":{"nested":{"foo":"bar3","list":[{"foo":"bar4"}]}}}}]}}`, inputCoercionForList)
 	})
+
+	t.Run("same-named", func(t *testing.T) {
+		runWithVariables(t, extractVariables, `
+schema {
+    mutation: Mutation
+}
+
+type Mutation {
+	foo(foo: FooInput!): Foo
+}
+type Foo {
+	id: String
+}
+
+input FooInput {
+	content: [ContentInput!]!
+}
+
+input ContentInput {
+	content: String
+}
+`, `
+mutation MyMutation {
+			foo(foo: {
+				content: {
+						content: "Test"
+					}
+			}) { id }
+		}`, ``,
+			`
+mutation MyMutation($a: FooInput!){
+  foo(foo: $a) {
+    id
+  }
+}`, `{}`, `{"a":{"content":[{"content":"Test"}]}}`, inputCoercionForList)
+	})
 }
