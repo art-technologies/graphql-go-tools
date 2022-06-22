@@ -365,15 +365,16 @@ func (d *dataLoader) selectedDataForFetch(input [][]byte, path ...string) ([][]b
 
 	for i := range input {
 		el, dataType, _, err := jsonparser.Get(input[i], current)
-		if dataType == jsonparser.NotExist {
-			// The input has an object that doesn't contain the path component.
+		if dataType == jsonparser.NotExist || dataType == jsonparser.Null {
+			// The input has an object that doesn't contain the path component or that component is null.
+			// Null value will be present when working with gqlgen (as there is no omitempty in this case).
 			// This can happen in the following situation. Consider the
 			// following query:
 			//
 			// {
 			//   someArrayWithInterfaceItem {
 			//     ... on A {
-			//       aField {
+			//       aField { <- nullable
 			//         id
 			//         fieldFromAnotherService  # <- this is federated
 			//       }
@@ -390,7 +391,8 @@ func (d *dataLoader) selectedDataForFetch(input [][]byte, path ...string) ([][]b
 			//     "someArrayWithInterfaceItem": [
 			//       {"__typename": "A", "aField": {"id": 1}},
 			//       {"__typename": "B", "someOtherField": "hello"},
-			//       {"__typename": "A", "aField": {"id": 2}}
+			//       {"__typename": "A", "aField": {"id": 2}},
+			//       {"__typename": "A", "aField": null}
 			//     ]
 			// }
 			//
